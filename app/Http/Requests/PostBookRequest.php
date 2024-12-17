@@ -24,8 +24,15 @@ class PostBookRequest extends FormRequest
     public function rules()
     {
         // @TODO implement
+        // implemented
         return [
-            //
+            'isbn' => 'required|string|min:13|max:13|unique:books',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:1000',
+            'authors' => 'required|array|min:1',
+            'authors.*' => 'required|exists:authors,id',
+            'published_year' => 'required|integer|between:1900,2020',
+            'price' => 'required|numeric|min:0',
         ];
     }
 }

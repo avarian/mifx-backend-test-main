@@ -16,6 +16,11 @@ class BookContentResource extends JsonResource
     {
         return [
             // @TODO implement
+            // implemented
+            'id' => $this->id,
+            'label' => $this->label,
+            'title' => $this->title,
+            'page_number' => $this->page_number,
         ];
     }
 }

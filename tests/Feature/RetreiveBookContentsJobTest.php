@@ -25,7 +25,7 @@ class RetreiveBookContentsJobTest extends TestCase
     }
 
     /**
-     * test job can retreive data from third api 
+     * test job can retreive data from third api
      * and insert to database
      *
      * @return void
@@ -42,7 +42,7 @@ class RetreiveBookContentsJobTest extends TestCase
     }
 
     /**
-     * test job can retreive data from third api 
+     * test job can retreive data from third api
      * and insert to database
      *
      * @return void

@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Book;
 use Exception;
+use App\BookContent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -35,5 +36,28 @@ class RetreiveBookContentsJob implements ShouldQueue
     public function handle()
     {
         // @TODO implement
+        // implemented
+        $isbn = $this->book->isbn;
+        $response = Http::get(config("bookshelf.uri")."/{$isbn}");
+
+        if ($response->successful()) {
+            $response = $response->object();
+
+            foreach ($response->data->details->table_of_contents as $content) {
+                BookContent::create([
+                    'book_id' => $this->book->id,
+                    'label' => $content->label,
+                    'title' => $content->title,
+                    'page_number' => $content->pagenum,
+                ]);
+            }
+        } else {
+            BookContent::create([
+                'book_id' => $this->book->id,
+                'label' => null,
+                'title' => 'Cover',
+                'page_number' => 1,
+            ]);
+        }
     }
 }
