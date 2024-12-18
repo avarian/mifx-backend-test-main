@@ -25,8 +25,7 @@ class RetreiveBookContentsJob implements ShouldQueue
      */
     public function __construct(
         public Book $book
-    ) {
-    }
+    ) {}
 
     /**
      * Execute the job.
@@ -37,26 +36,34 @@ class RetreiveBookContentsJob implements ShouldQueue
     {
         // @TODO implement
         // implemented
+        // Fetch the ISBN of the book from $this->book object
         $isbn = $this->book->isbn;
-        $response = Http::get(config("bookshelf.uri")."/{$isbn}");
 
+        // Send a GET request to the endpoint constructed with the configured URI and ISBN
+        $response = Http::get(config("bookshelf.uri") . "/{$isbn}");
+
+        // Check if the response is successful (HTTP status code 200)
         if ($response->successful()) {
+            // Convert the response to an object for easier access
             $response = $response->object();
 
+            // Iterate over each content item in the table of contents from the response data
             foreach ($response->data->details->table_of_contents as $content) {
+                // Create a new BookContent record for each content item
                 BookContent::create([
-                    'book_id' => $this->book->id,
-                    'label' => $content->label,
-                    'title' => $content->title,
-                    'page_number' => $content->pagenum,
+                    'book_id' => $this->book->id,       // Associate the content with the current book ID
+                    'label' => $content->label,         // Use the label provided in the content
+                    'title' => $content->title,         // Use the title from the content
+                    'page_number' => $content->pagenum, // Assign the page number from the content
                 ]);
             }
         } else {
+            // If the response is not successful, create a default BookContent entry
             BookContent::create([
-                'book_id' => $this->book->id,
-                'label' => null,
-                'title' => 'Cover',
-                'page_number' => 1,
+                'book_id' => $this->book->id, // Associate with the current book ID
+                'label' => null,              // No specific label is given
+                'title' => 'Cover',           // Default title set to 'Cover'
+                'page_number' => 1,           // Default to page number 1
             ]);
         }
     }

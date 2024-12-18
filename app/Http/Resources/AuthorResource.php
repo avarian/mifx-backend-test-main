@@ -17,9 +17,9 @@ class AuthorResource extends JsonResource
         return [
             // @TODO implement
             // implemented
-            'id' => $this->id,
-            'name' => $this->name,
-            'surname' => $this->surname,
+            'id' => $this->id,           // Maps the object's id to an array element with key 'id'.
+            'name' => $this->name,       // Maps the object's name to an array element with key 'name'.
+            'surname' => $this->surname, // Maps the object's surname to an array element with key 'surname'.
         ];
     }
 }
